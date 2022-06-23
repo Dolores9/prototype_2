@@ -87,7 +87,7 @@ export class RocketGame {
         }
     }
 
-    private collision(rockets:Rocket, heads:Heads){
+    private collision(rockets:Rocket, heads:Head){
         const bounds1 = rockets.getBounds()
         const bounds2 = heads.getBounds()
 
