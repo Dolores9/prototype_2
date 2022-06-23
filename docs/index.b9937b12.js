@@ -516,33 +516,29 @@ function hmrAcceptRun(bundle, id) {
 },{}],"eCPDb":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "fishGame", ()=>fishGame
+parcelHelpers.export(exports, "RocketGame", ()=>RocketGame
 );
 var _pixiJs = require("pixi.js");
-var _fishPng = require("./images/fish.png");
-var _fishPngDefault = parcelHelpers.interopDefault(_fishPng);
-var _sharkPng = require("./images/shark.png");
-var _sharkPngDefault = parcelHelpers.interopDefault(_sharkPng);
-var _backgroundPng = require("./images/background.png");
-var _backgroundPngDefault = parcelHelpers.interopDefault(_backgroundPng);
-var _bubblePng = require("./images/bubble.png");
-var _bubblePngDefault = parcelHelpers.interopDefault(_bubblePng);
-var _fish = require("./fish");
-var _bubble = require("./bubble");
+var _headPng = require("./images/head.png");
+var _headPngDefault = parcelHelpers.interopDefault(_headPng);
+var _rocketPng = require("./images/rocket.png");
+var _rocketPngDefault = parcelHelpers.interopDefault(_rocketPng);
+var _backgroundRainJpg = require("./images/background-rain.jpg");
+var _backgroundRainJpgDefault = parcelHelpers.interopDefault(_backgroundRainJpg);
+var _head = require("./head");
 var _shark = require("./shark");
-class fishGame {
-    fishes = [];
-    bubbles = [];
-    sharks = [];
-    background = _backgroundPngDefault.default;
+class RocketGame {
+    heads = [];
+    rockets = [];
+    background = _backgroundRainJpgDefault.default;
     constructor(){
         this.pixi = new _pixiJs.Application({
-            width: 800,
-            height: 600
+            width: innerHeight,
+            height: innerHeight
         });
         document.body.appendChild(this.pixi.view);
         this.loader = new _pixiJs.Loader();
-        this.loader.add("backgroundTexture", _backgroundPngDefault.default).add('fishTexture', _fishPngDefault.default).add('bubbleTexture', _bubblePngDefault.default).add('sharkTexture', _sharkPngDefault.default);
+        this.loader.add("backgroundTexture", _backgroundRainJpgDefault.default).add('fishTexture', _headPngDefault.default).add('rocketTexture', _rocketPngDefault.default);
         this.loader.load(()=>this.doneLoading()
         );
     }
@@ -553,47 +549,44 @@ class fishGame {
         this.background.height = window.innerHeight;
         this.pixi.stage.addChild(this.background);
         for(let i = 0; i < 25; i++){
-            let myFishes = new _fish.Fish(this.loader.resources["fishTexture"].texture);
-            this.pixi.stage.addChild(myFishes);
-            this.fishes.push(myFishes);
-            let manyBubbles = new _bubble.Bubble(this.loader.resources["bubbleTexture"].texture);
-            this.pixi.stage.addChild(manyBubbles);
-            this.bubbles.push(manyBubbles);
+            let myHeads = new _head.Head(this.loader.resources["headTexture"].texture);
+            this.pixi.stage.addChild(myHeads);
+            this.heads.push(myHeads);
         }
         for(let i1 = 0; i1 < 1; i1++){
-            let shark = new _shark.Shark(this.loader.resources["sharkTexture"].texture);
-            this.pixi.stage.addChild(shark);
-            this.sharks.push(shark);
+            let rocket = new _shark.Rocket(this.loader.resources["rocketTexture"].texture);
+            this.pixi.stage.addChild(rocket);
+            this.rockets.push(rocket);
         }
         this.pixi.ticker.add((delta)=>this.updateTheStage(delta)
         );
     }
     updateTheStage(delta) {
-        for (let myfish of this.fishes)myfish.swim();
-        for (let myshark of this.sharks)myshark.update();
+        for (let myhead of this.heads)myhead.swim();
+        for (let myrocket of this.rockets)myrocket.update();
         this.checkCollision();
     }
-    killFish(shark, fishes) {
-        fishes.destroy();
-        const index = this.fishes.indexOf(fishes, 0);
-        if (index > -1) this.fishes.splice(index, 1);
+    killHead(rocket, heads) {
+        heads.destroy();
+        const index = this.heads.indexOf(heads, 0);
+        if (index > -1) this.heads.splice(index, 1);
     }
     checkCollision() {
-        for (let shark of this.sharks){
-            for (let fish of this.fishes)if (this.collision(shark, fish)) //  this.scoreUp()
-            this.killFish(shark, fish);
+        for (let rocket of this.rockets){
+            for (let head of this.heads)if (this.collision(rocket, head)) //  this.scoreUp()
+            this.killHead(rocket, head);
         }
     }
-    collision(shark, fishes) {
-        const bounds1 = shark.getBounds();
-        const bounds2 = fishes.getBounds();
+    collision(rockets, heads) {
+        const bounds1 = rockets.getBounds();
+        const bounds2 = heads.getBounds();
         return bounds1.x < bounds2.x + bounds2.width && bounds1.x + bounds1.width > bounds2.x && bounds1.y < bounds2.y + bounds2.height && bounds1.y + bounds1.height > bounds2.y;
     }
     resetGame() {}
 }
-new fishGame();
+new RocketGame();
 
-},{"pixi.js":"dsYej","./images/fish.png":"1SFCL","./images/shark.png":"kh90a","./images/background.png":"jnqo5","./images/bubble.png":"lGzyi","./fish":"7VsCH","./bubble":"iOWvL","./shark":"kN3uI","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"dsYej":[function(require,module,exports) {
+},{"pixi.js":"dsYej","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./images/head.png":"lDs4N","./head":"6hhj4","./images/rocket.png":"18RDR","./shark":"kN3uI","./images/background-rain.jpg":"dNwdL"}],"dsYej":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "utils", ()=>_utils
@@ -37090,8 +37083,8 @@ function __extends(d, b) {
     return AnimatedSprite1;
 }(_sprite.Sprite);
 
-},{"@pixi/core":"7PEF8","@pixi/sprite":"9mbxh","@pixi/ticker":"8ekG7","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"1SFCL":[function(require,module,exports) {
-module.exports = require('./helpers/bundle-url').getBundleURL('5kMhn') + "fish.510b053c.png" + "?" + Date.now();
+},{"@pixi/core":"7PEF8","@pixi/sprite":"9mbxh","@pixi/ticker":"8ekG7","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"lDs4N":[function(require,module,exports) {
+module.exports = require('./helpers/bundle-url').getBundleURL('5kMhn') + "head.16b30bf4.png" + "?" + Date.now();
 
 },{"./helpers/bundle-url":"lgJ39"}],"lgJ39":[function(require,module,exports) {
 "use strict";
@@ -37127,22 +37120,13 @@ exports.getBundleURL = getBundleURLCached;
 exports.getBaseURL = getBaseURL;
 exports.getOrigin = getOrigin;
 
-},{}],"kh90a":[function(require,module,exports) {
-module.exports = require('./helpers/bundle-url').getBundleURL('5kMhn') + "shark.29daeb95.png" + "?" + Date.now();
-
-},{"./helpers/bundle-url":"lgJ39"}],"jnqo5":[function(require,module,exports) {
-module.exports = require('./helpers/bundle-url').getBundleURL('5kMhn') + "background.84053517.png" + "?" + Date.now();
-
-},{"./helpers/bundle-url":"lgJ39"}],"lGzyi":[function(require,module,exports) {
-module.exports = require('./helpers/bundle-url').getBundleURL('5kMhn') + "bubble.56ab0ad6.png" + "?" + Date.now();
-
-},{"./helpers/bundle-url":"lgJ39"}],"7VsCH":[function(require,module,exports) {
+},{}],"6hhj4":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "Fish", ()=>Fish
+parcelHelpers.export(exports, "Head", ()=>Head
 );
 var _pixiJs = require("pixi.js");
-class Fish extends _pixiJs.Sprite {
+class Head extends _pixiJs.Sprite {
     // fish: PIXI.Sprite
     constructor(texture){
         super(texture);
@@ -37154,7 +37138,7 @@ class Fish extends _pixiJs.Sprite {
         this.scale.set(0.4 + Math.random() * 0.6);
         this.interactive = true;
         this.buttonMode = true;
-        this.on('pointerdown', ()=>this.fishClicked()
+        this.on('pointerdown', ()=>this.headClicked()
         );
     }
     update(delta) {
@@ -37173,36 +37157,16 @@ class Fish extends _pixiJs.Sprite {
     }
 }
 
-},{"pixi.js":"dsYej","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"iOWvL":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "Bubble", ()=>Bubble
-);
-var _pixiJs = require("pixi.js");
-class Bubble extends _pixiJs.Sprite {
-    constructor(texture){
-        super(texture);
-        this.speed = Math.random() * 1;
-        this.x = Math.random() * 800;
-        this.y = Math.random() * 500;
-        this.anchor.set(0.5);
-        this.tint = (Math.random() * 0.001 + 0.999) * 16777215;
-        this.scale.set(0.4 + Math.random() * 0.6);
-    }
-    swim() {
-        this.y += this.speed;
-        console.log(this.y);
-        if (this.y <= 15) this.y = -1000;
-    }
-}
+},{"pixi.js":"dsYej","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"18RDR":[function(require,module,exports) {
+module.exports = require('./helpers/bundle-url').getBundleURL('5kMhn') + "rocket.8e337fce.png" + "?" + Date.now();
 
-},{"pixi.js":"dsYej","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"kN3uI":[function(require,module,exports) {
+},{"./helpers/bundle-url":"lgJ39"}],"kN3uI":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "Shark", ()=>Shark
+parcelHelpers.export(exports, "Rocket", ()=>Rocket
 );
 var _pixiJs = require("pixi.js");
-class Shark extends _pixiJs.Sprite {
+class Rocket extends _pixiJs.Sprite {
     xspeed = 0;
     yspeed = 0;
     constructor(texture){
@@ -37266,6 +37230,9 @@ class Shark extends _pixiJs.Sprite {
     }
 }
 
-},{"pixi.js":"dsYej","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["5dfES","eCPDb"], "eCPDb", "parcelRequirea0e5")
+},{"pixi.js":"dsYej","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"dNwdL":[function(require,module,exports) {
+module.exports = require('./helpers/bundle-url').getBundleURL('5kMhn') + "background-rain.0ba55834.jpg" + "?" + Date.now();
+
+},{"./helpers/bundle-url":"lgJ39"}]},["5dfES","eCPDb"], "eCPDb", "parcelRequirea0e5")
 
 //# sourceMappingURL=index.b9937b12.js.map

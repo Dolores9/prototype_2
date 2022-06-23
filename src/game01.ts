@@ -1,32 +1,28 @@
 import * as PIXI from "pixi.js"
-import fishImage from "./images/fish.png"
-import sharkImage from "./images/shark.png"
-import backgroundImage from "./images/background.png"
-import bubblesImage from "./images/bubble.png"
-import { Fish } from "./fish"
-import { Bubble } from "./bubble"
-import {Shark} from "./shark"
+import headImage from "./images/head.png"
+import rocketImage from "./images/rocket.png"
+import backgroundImage from "./images/background-rain.jpg"
+import { Head } from "./head"
+import {Rocket} from "./shark"
 
-export class fishGame {
+export class RocketGame {
 
     private pixi: PIXI.Application
     private loader: PIXI.Loader
-    public fishes: Fish [] = []
-    public bubbles: Bubble [] = []
-    public sharks: Shark [] = []
+    public heads: Head [] = []
+    public rockets: Rocket [] = []
     public background = backgroundImage
 
     constructor() {
         this.pixi = new PIXI.Application({
-            width: 800, height: 600})
+            width: innerHeight, height: innerHeight})
         document.body.appendChild(this.pixi.view)
 
         this.loader = new PIXI.Loader()
         this.loader
             .add("backgroundTexture", backgroundImage)
-            .add('fishTexture', fishImage)
-            .add('bubbleTexture', bubblesImage)
-            .add('sharkTexture', sharkImage )
+            .add('fishTexture', headImage)
+            .add('rocketTexture', rocketImage )
         this.loader.load(() => this.doneLoading())
     }
 
@@ -38,19 +34,17 @@ export class fishGame {
         this.pixi.stage.addChild(this.background)
 
         for (let i = 0; i < 25; i++) {
-            let myFishes = new Fish(this.loader.resources["fishTexture"].texture!)
-            this.pixi.stage.addChild(myFishes)
-            this.fishes.push(myFishes)
+            let myHeads = new Head(this.loader.resources["headTexture"].texture!)
+            this.pixi.stage.addChild(myHeads)
+            this.heads.push(myHeads)
 
-            let manyBubbles = new Bubble(this.loader.resources["bubbleTexture"].texture!)
-            this.pixi.stage.addChild(manyBubbles)
-            this.bubbles.push(manyBubbles)
+           
 
         }
         for(let i = 0; i < 1; i++){
-            let shark = new Shark(this.loader.resources["sharkTexture"].texture!)
-            this.pixi.stage.addChild(shark)
-            this.sharks.push(shark)
+            let rocket = new Rocket(this.loader.resources["rocketTexture"].texture!)
+            this.pixi.stage.addChild(rocket)
+            this.rockets.push(rocket)
         }
 
         this.pixi.ticker.add((delta) => this.updateTheStage(delta))
@@ -59,43 +53,43 @@ export class fishGame {
 
     updateTheStage(delta: number) {
 
-        for (let myfish of this.fishes) {
-            myfish.swim()
+        for (let myhead of this.heads) {
+            myhead.swim()
         }
 
-        for (let myshark of this.sharks){
-            myshark.update();
+        for (let myrocket of this.rockets){
+            myrocket.update();
         }
 
         this.checkCollision()
     }
 
-    killFish(shark:Shark, fishes:Fish){
-        fishes.destroy()
-        const index = this.fishes.indexOf(fishes, 0);
+    killHead(rocket:Rocket, heads:Head){
+        heads.destroy()
+        const index = this.heads.indexOf(heads, 0);
         if (index > -1) {
-        this.fishes.splice(index, 1);
+        this.heads.splice(index, 1);
         }
     }
 
     private checkCollision(){
         
-        for (let shark of this.sharks){
+        for (let rocket of this.rockets){
             
-            for (let fish of this.fishes){
+            for (let head of this.heads){
                 
-                 if(this.collision(shark, fish)){
+                 if(this.collision(rocket, head)){
                 //  this.scoreUp()
-                 this.killFish(shark, fish)
+                 this.killHead(rocket, head)
                  }
                 // break
             }
         }
     }
 
-    private collision(shark:Shark, fishes:Fish){
-        const bounds1 = shark.getBounds()
-        const bounds2 = fishes.getBounds()
+    private collision(rockets:Rocket, heads:Heads){
+        const bounds1 = rockets.getBounds()
+        const bounds2 = heads.getBounds()
 
         return bounds1.x < bounds2.x + bounds2.width
             && bounds1.x + bounds1.width > bounds2.x
@@ -109,4 +103,4 @@ export class fishGame {
     }
 }
             
-new fishGame()
+new RocketGame()

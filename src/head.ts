@@ -1,7 +1,7 @@
 import * as PIXI from 'pixi.js'
-import { fishGame } from "./game01"
+import { RocketGame } from "./game01"
 
-export class Fish extends PIXI.Sprite {
+export class Head extends PIXI.Sprite {
 
     speed: number
     // fish: PIXI.Sprite
@@ -16,7 +16,7 @@ export class Fish extends PIXI.Sprite {
         this.scale.set(0.4 + (Math.random() * 0.6))
         this.interactive = true
         this.buttonMode = true
-        this.on('pointerdown', () => this.fishClicked())
+        this.on('pointerdown', () => this.headClicked())
     }
 
     update(delta: number) {

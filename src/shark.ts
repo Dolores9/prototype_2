@@ -1,6 +1,6 @@
-import * as PIXI from 'pixi.js';
-import { fishGame } from "./game01"
-export class Shark extends PIXI.Sprite {
+import * as PIXI from 'pixi.js'
+import { RocketGame } from "./game01"
+export class Rocket extends PIXI.Sprite {
 
     xspeed = 0
     yspeed = 0
